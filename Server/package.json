@@ -1,10 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "type": "module",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "node --loader ts-node/esm src/server.ts",
+    "prepare": "prisma generate",
+    "prisma:generate": "prisma generate",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit"
@@ -14,6 +15,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "5.22.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",
     "cookie-parser": "^1.4.7",
@@ -37,6 +39,7 @@
     "@types/pg": "^8.20.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "prisma": "5.22.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "5.4.5"

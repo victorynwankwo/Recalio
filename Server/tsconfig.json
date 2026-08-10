@@ -6,14 +6,14 @@
     // "outDir": "./dist",
 
     // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "esnext",
+    // Using CommonJS (not "type": "module" in package.json), so module + moduleResolution
+    // must match — this is what fixes the ".js import" and "must use import" errors.
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
     "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
-    // "types": ["node"],
     // and npm install -D @types/node
 
     // Other Outputs
@@ -35,10 +35,13 @@
 
     // Recommended Options
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true
+    // verbatimModuleSyntax OFF — it enforces strict ESM import/export rules,
+    // which conflicts with our CommonJS setup. This was the cause of the red lines.
+    "verbatimModuleSyntax": false,
+    // esModuleInterop lets you write "import express from 'express'"
+    // instead of "import * as express from 'express'" — cleaner ES6-style imports.
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
