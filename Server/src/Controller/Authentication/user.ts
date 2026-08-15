@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
 import prisma from "../../Config/db";
-import { hashPassword } from "../../util/bycrypt";
+import { hashPassword, comparePassword } from "../../util/bycrypt";
 import jwt from "jsonwebtoken"
 
 export const register = async (req: Request, res: Response) => {
@@ -55,6 +54,8 @@ export const register = async (req: Request, res: Response) => {
    
     const { password: _, ...userWithoutPassword } = user;
 
+    console.log(user)
+
     return res.status(201).json({
       message: "User registered successfully",
       user: userWithoutPassword,
@@ -86,7 +87,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // 4. Compare the plain-text password against the stored hash
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await comparePassword(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -125,5 +126,29 @@ export const login = async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Login error:", err);
     return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+
+
+export const googleCallback = async (req: Request, res: Response) => {
+  try {
+    const user = req.user as any // ✅ properly typed now, no `any` needed
+
+    if (!user) {
+      return res.redirect("http://localhost:5173/login?error=google_auth_failed");
+    }
+
+    // TypeScript now knows user.id, user.username, etc. are valid and correctly typed
+    const accessToken = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.ACCESS_TOKEN_SECRET as string,
+      { expiresIn: "1h" }
+    );
+
+    // ...rest stays the same
+  } catch (err) {
+    console.error("Google callback error:", err);
+    res.redirect("http://localhost:5173/login?error=server_error");
   }
 };

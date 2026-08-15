@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node10",
     "target": "es2020",
     "types": ["node"],
     "sourceMap": true,
@@ -11,7 +10,6 @@
     "verbatimModuleSyntax": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "ignoreDeprecations": "6.0"
+    "forceConsistentCasingInFileNames": true
   }
 }
