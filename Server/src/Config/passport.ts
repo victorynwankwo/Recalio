@@ -2,8 +2,6 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import prisma from "./db";
 
-console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-console.log("HIT")
 
 passport.use(
   new GoogleStrategy(

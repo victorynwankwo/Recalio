@@ -4,13 +4,14 @@ import { SwaggerDefinition } from "swagger-jsdoc";
 const swaggerDefinition: SwaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Chat App API",
+    title: "Recalio API",
     version: "1.0.0",
-    description: "REST API documentation for the chat application (rooms, messages, auth)",
+    description:
+      "REST API documentation for the Recalio application",
   },
   servers: [
     {
-      url: "http://localhost:3500",
+      url: "http://localhost:5000",
       description: "Local development server",
     },
   ],
