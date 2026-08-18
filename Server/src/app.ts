@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import dotenv from "dotenv";
@@ -7,12 +6,14 @@ import passport from "./Config/passport";
 import {swagger} from "./Config/swagger"; 
 import swaggerUi from "swagger-ui-express";
 import authRoutes from "./routes/userRoute";
+import corsoptions from "./Config/corsoption";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+ app.use(cors(corsoptions));
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
