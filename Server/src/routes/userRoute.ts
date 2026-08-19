@@ -5,6 +5,8 @@ import {
   login,
   googleCallback,
 } from "../Controller/Authentication/user";
+import { refreshAccessToken } from "../Controller/Authentication/refresh";
+import { logout } from "../Controller/Authentication/logout";
 
 const router = express.Router();
 
@@ -153,13 +155,71 @@ router.post("/register", register);
  */
 router.post("/login", login);
 
+// Refresh access token using cookie-stored refresh token
+/**
+ * @openapi
+ * /api/auth/refresh:
+ *   get:
+ *     summary: Refresh access token using refresh token cookie
+ *     tags:
+ *       - Auth
+ *     description: |
+ *       Reads an httpOnly `refreshToken` cookie, verifies it, issues a new access token
+ *       and rotates the refresh token (sets a new httpOnly cookie). Useful for silent
+ *       token refresh flows from the frontend.
+ *     responses:
+ *       '200':
+ *         description: Access token refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Access token refreshed successfully.
+ *                 accessToken:
+ *                   type: string
+ *                   description: New JWT access token
+ *       '401':
+ *         description: Missing, invalid, or expired refresh token
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Refresh token not found.
+ */
+router.get("/refresh", refreshAccessToken);
+
+/**
+ * @openapi
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout user and clear refresh token cookie
+ *     tags:
+ *       - Auth
+ *     description: Clears the httpOnly `refreshToken` cookie on the client so subsequent
+ *       refresh attempts will fail. Use this to end a user session from the frontend.
+ *     responses:
+ *       '200':
+ *         description: Logged out successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Logged out successfully.
+ */
+router.post("/logout", logout);
+
 /**
  * @openapi
  * /api/auth/google:
  *   get:
  *     summary: Redirects user to Google for OAuth authentication
  *     tags:
- *       - Auth
+ *       - Google Auth
  *     responses:
  *       '302':
  *         description: Redirect to Google's OAuth consent screen
@@ -175,7 +235,7 @@ router.get(
  *   get:
  *     summary: Google OAuth callback endpoint
  *     tags:
- *       - Auth
+ *       - Google Auth
  *     description: |
  *       This endpoint is called by Google after the user completes authentication.
  *       On success the server will create/sign an access token and then redirect to the frontend.

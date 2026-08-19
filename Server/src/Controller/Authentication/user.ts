@@ -60,7 +60,9 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const user = await prisma.user.findUnique({
@@ -80,13 +82,13 @@ export const login = async (req: Request, res: Response) => {
     const accessToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     const refreshToken = jwt.sign(
-      { id: user.id },
+      { id: user.id, username: user.username },
       process.env.REFRESH_TOKEN_SECRET as string,
-      { expiresIn: "30d" }
+      { expiresIn: "30d" },
     );
 
     res.cookie("refreshToken", refreshToken, {
@@ -116,21 +118,23 @@ export const googleCallback = async (req: Request, res: Response) => {
     const user = req.user;
 
     if (!user) {
-      return res.redirect("http://localhost:5173/login?error=google_auth_failed");
+      return res.redirect(
+        "http://localhost:5173/login?error=google_auth_failed",
+      );
     }
 
     // Generate access token — same pattern as normal login
     const accessToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     // Generate refresh token — same pattern as normal login
     const refreshToken = jwt.sign(
-      { id: user.id },
+      { id: user.id, username: user.username },
       process.env.REFRESH_TOKEN_SECRET as string,
-      { expiresIn: "30d" }
+      { expiresIn: "30d" },
     );
 
     // Set refresh token as httpOnly cookie — same as normal login
