@@ -1,20 +1,24 @@
 // src/middleware/auth.middleware.ts
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { AuthUserPayload } from "../types/jwt.types";
 
-// Matches your Prisma User model — id is a number (Int, autoincrement),
-// not a string. This must stay consistent with src/types/express/index.d.ts
-type AuthenticatedRequest = Request & {
-  user?: Express.User;
-};
+// This is deliberately its OWN type, separate from Express.User —
+// the JWT only ever contains id + username, never the full user record.
+
+interface AuthenticatedRequest extends Request {
+  authUser?: AuthUserPayload;
+}
+
+
 
 export const verifyUser = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction,
 ) => {
-  // Safely extract Bearer Token from HTTP Headers
   const token = req.headers.authorization?.split(" ")[1];
+  console.log("🔐 verifyUser started");
 
   if (!token) {
     return res
@@ -23,8 +27,6 @@ export const verifyUser = (
   }
 
   try {
-    // No fallback secret — if ACCESS_TOKEN_SECRET is missing, fail loudly
-    // rather than silently signing/verifying with a guessable default.
     const decoded = jwt.verify(
       token,
       process.env.ACCESS_TOKEN_SECRET as string,
@@ -33,19 +35,16 @@ export const verifyUser = (
     if (
       !decoded ||
       typeof decoded !== "object" ||
-      typeof decoded.id !== "number" ||
+      typeof decoded.id !== "string" ||
       typeof decoded.username !== "string"
     ) {
       return res.status(401).json({ message: "Invalid token payload." });
     }
 
-    // Assign only the decoded fields but cast to `Express.User` to satisfy
-    // the global `Express.User` augmentation which expects full Prisma User
-    // properties. The runtime value contains at least `id` and `username`.
-    req.user = {
+    req.authUser = {
       id: decoded.id,
       username: decoded.username,
-    } as unknown as Express.User;
+    };
 
     next();
   } catch (error) {

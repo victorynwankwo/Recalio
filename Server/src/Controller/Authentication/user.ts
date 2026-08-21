@@ -125,7 +125,7 @@ export const googleCallback = async (req: Request, res: Response) => {
 
     // Generate access token — same pattern as normal login
     const accessToken = jwt.sign(
-      { id: user.id, username: user.username },
+      { id: user.id, username: user.username }, 
       process.env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: "1h" },
     );

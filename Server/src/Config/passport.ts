@@ -2,7 +2,6 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import prisma from "./db";
 
-
 passport.use(
   new GoogleStrategy(
     {
@@ -10,12 +9,12 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (_accessToken, _refreshToken, profile, done) => {
       try {
         const email = profile.emails?.[0]?.value;
         const googleId = profile.id;
         const username = profile.displayName;
-        // const avatar = profile.photos?.[0]?.value;
+        const avatar = profile.photos?.[0]?.value ?? null;
 
         if (!email) {
           return done(new Error("No email found from Google profile"));
@@ -30,18 +29,31 @@ passport.use(
 
         if (!user) {
           // No existing user — create one (this is effectively "sign up")
+
+          // Check if this username is already taken by someone else
+          let finalUsername = username;
+          const usernameTaken = await prisma.user.findUnique({
+            where: { username: finalUsername },
+          });
+
+          if (usernameTaken) {
+            // Make it unique by appending part of the Google ID
+            finalUsername = `${username}_${googleId.slice(0, 5)}`;
+          }
+
           user = await prisma.user.create({
             data: {
-              username,
+              username: finalUsername,
               email,
               googleId,
+              avatar,
             },
           });
         } else if (!user.googleId) {
           // Existing email/password user is now linking their Google account
           user = await prisma.user.update({
             where: { id: user.id },
-            data: { googleId },
+            data: { googleId, avatar },
           });
         }
 
@@ -49,15 +61,15 @@ passport.use(
       } catch (err) {
         return done(err as Error);
       }
-    }
-  )
+    },
+  ),
 );
 
 passport.serializeUser((user: Express.User, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async (id: number, done) => {
+passport.deserializeUser(async (id: string, done) => {
   try {
     const user = await prisma.user.findUnique({ where: { id } });
     done(null, user);

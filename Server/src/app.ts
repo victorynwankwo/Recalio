@@ -8,6 +8,7 @@ import swaggerUi from "swagger-ui-express";
 import authRoutes from "./routes/userRoute";
 import corsoptions from "./Config/corsoption";
 import cors from "cors";
+import documentRoutes from "./routes/documentRoute";
 
 dotenv.config();
 
@@ -31,6 +32,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api", documentRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
