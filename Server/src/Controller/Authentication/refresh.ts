@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-
-type TokenPayload = {
-  id: number;
-  username: string;
-};
-
+import { TokenPayload } from "../../types/refresh.types";
 export const refreshAccessToken = (
   req: Request,
   res: Response,
@@ -45,7 +40,7 @@ export const refreshAccessToken = (
       payload,
       process.env.ACCESS_TOKEN_SECRET as string,
       {
-        expiresIn: "15m",
+        expiresIn: "20m",
       },
     );
 
@@ -54,7 +49,7 @@ export const refreshAccessToken = (
       payload,
       process.env.REFRESH_TOKEN_SECRET as string,
       {
-        expiresIn: "7d",
+        expiresIn: "30d",
       },
     );
 

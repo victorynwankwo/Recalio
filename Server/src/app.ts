@@ -10,6 +10,7 @@ import corsoptions from "./Config/corsoption";
 import cors from "cors";
 import documentRoutes from "./routes/documentRoute";
 import summaryRoutes from "./routes/summaryRoute";
+import quizRoutes from "./routes/quizRoute";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api", documentRoutes);
 app.use("/api", summaryRoutes);
+app.use("/api", quizRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });

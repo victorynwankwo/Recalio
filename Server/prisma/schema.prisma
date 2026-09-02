@@ -26,5 +26,26 @@ model Document {
   summary       String?  @db.Text
   userId        String
   user          User     @relation(fields: [userId], references: [id])
+  flashcards    Flashcard[]
+  quizzes       Quiz[]
   createdAt     DateTime @default(now())
+}
+
+model Flashcard {
+  id          String   @id @default(cuid())
+  front       String   @db.Text
+  back        String   @db.Text
+  documentId  String
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Quiz {
+  id          String   @id @default(cuid())
+  questions   Json
+  documentId  String
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

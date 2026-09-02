@@ -7,6 +7,6 @@ cloudinary.config({
   cloudinary_url: process.env.CLOUDINARY_KEY as string,
 });
 
-console.log("CLOUDINARY_URL loaded:", !!process.env.CLOUDINARY_URL);
+// console.log("CLOUDINARY_URL loaded:", !!process.env.CLOUDINARY_URL);
 
 export default cloudinary;

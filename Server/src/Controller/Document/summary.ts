@@ -49,3 +49,55 @@ ${document.extractedText}`;
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const getSummaries = async (req: Request, res: Response) => {
+  try {
+    const userId = req.authUser!.id;
+    const summaries = await prisma.document.findMany({
+      where: { userId, summary: { not: null } },
+      select: { id: true, title: true, summary: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return res.status(200).json({ success: true, data: summaries });
+  } catch (err) {
+    console.error("Error fetching summaries:", err);
+    return res.status(500).json({ message: "Failed to fetch summaries" });
+  }
+};
+
+export const getSummaryByDocumentId = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const userId = req.authUser!.id;
+    const document = await prisma.document.findFirst({
+      where: { id, userId },
+      select: { id: true, title: true, summary: true, createdAt: true },
+    });
+
+    if (!document) return res.status(404).json({ message: "Document not found" });
+    if (!document.summary) return res.status(404).json({ message: "Summary not found" });
+
+    return res.status(200).json({ success: true, data: document });
+  } catch (err) {
+    console.error("Error fetching summary:", err);
+    return res.status(500).json({ message: "Failed to fetch summary" });
+  }
+};
+
+export const deleteSummary = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const userId = req.authUser!.id;
+    const document = await prisma.document.findFirst({ where: { id, userId } });
+
+    if (!document) return res.status(404).json({ message: "Document not found" });
+    if (!document.summary) return res.status(404).json({ message: "Summary not found" });
+
+    await prisma.document.update({ where: { id }, data: { summary: null } });
+    return res.status(200).json({ message: "Summary deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting summary:", err);
+    return res.status(500).json({ message: "Failed to delete summary" });
+  }
+};
