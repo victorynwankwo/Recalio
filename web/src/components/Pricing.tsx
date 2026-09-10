@@ -1,26 +1,33 @@
 import React from "react";
 import { pricingPlans } from "../Data/data";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import ScrollReveal from "./ScrollReveal";
 
 const Pricing: React.FC = () => {
+  const { setSectionRef } = useAuth();
+
   return (
     <section
-      className="mx-auto mb-32 max-w-container-max px-margin-mobile max-[320px]:mb-20 max-[320px]:px-2 md:px-gutter"
       id="pricing"
+      ref={setSectionRef("pricing")}
+      className="scroll-mt-20 mx-auto mb-32 max-w-container-max px-margin-mobile max-[320px]:mb-20 max-[320px]:px-2 md:px-gutter"
     >
-      <div className="text-center mb-16">
+      <ScrollReveal className="mb-16 text-center">
         <h2 className="font-display text-headline-md text-navy mb-4">
           Simple, transparent pricing
         </h2>
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
           Start for free, upgrade when you need more power.
         </p>
-      </div>
+      </ScrollReveal>
 
       <div className="mx-auto flex max-w-4xl flex-col justify-center gap-8 max-[320px]:gap-4 lg:flex-row">
         {pricingPlans.map((plan) => (
+          <ScrollReveal key={plan.name} delay={pricingPlans.indexOf(plan) * 120} className="flex flex-1">
           <div
             key={plan.name}
-            className={`relative flex flex-1 flex-col rounded-2xl p-8 max-[320px]:rounded-xl max-[320px]:p-4 ${
+            className={`relative flex flex-1 flex-col rounded-2xl p-8 text-center max-[320px]:rounded-xl max-[320px]:p-4 md:text-left ${
               plan.isPopular
                 ? "bg-navy text-white shadow-xl transform md:-translate-y-4"
                 : "border border-outline-variant/30 bg-surface-container-lowest"
@@ -63,7 +70,7 @@ const Pricing: React.FC = () => {
             </div>
             <ul className="mb-8 flex-1 space-y-4">
               {plan.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-3">
+                <li key={feature} className="flex items-center justify-center gap-3 md:justify-start">
                   <span
                     className={`material-symbols-outlined text-sm ${
                       plan.isPopular ? "text-secondary-fixed" : "text-secondary"
@@ -81,7 +88,8 @@ const Pricing: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <button
+            <Link
+              to="/login"
               className={`w-full cursor-pointer rounded-lg py-3 font-semibold transition-colors ${
                 plan.isPopular
                   ? "bg-gradient-primary text-white hover:shadow-ambient"
@@ -89,8 +97,9 @@ const Pricing: React.FC = () => {
               }`}
             >
               {plan.buttonText}
-            </button>
+            </Link>
           </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>

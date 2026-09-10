@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
         <div className="mb-12 flex w-full flex-col items-center justify-center gap-3 max-[320px]:mb-8 max-[320px]:gap-2 sm:mb-16 sm:w-auto sm:flex-row">
           <Link
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#02a9ff] px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0096e6] hover:shadow-md max-[320px]:px-3 max-[320px]:py-2.5 max-[320px]:text-xs sm:w-auto sm:text-base"
-            to="#cta"
+            to="/login"
           >
             Start Learning Free
             <span className="text-lg leading-none">→</span>

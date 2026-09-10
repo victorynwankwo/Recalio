@@ -1,58 +1,19 @@
-export interface NavLink {
-  label: string;
-  href: string;
-}
-
-export interface ProblemItem {
-  icon: string;
-  title: string;
-  description: string;
-  iconBgClass: string;
-  iconColorClass: string;
-}
-
-export interface StepItem {
-  step: number;
-  title: string;
-  description: string;
-  icon?: string;
-  isHighlighted?: boolean;
-}
-
-export interface FeatureItem {
-  icon: string;
-  title: string;
-  description: string;
-  iconBg: string;
-  iconColor: string;
-}
-
-export interface PricingPlan {
-  name: string;
-  price: string;
-  period: string;
-  description: string;
-  buttonText: string;
-  isPopular?: boolean;
-  features: string[];
-}
-
-export interface FAQItem {
-  question: string;
-  answer: string;
-  defaultOpen?: boolean;
-}
-
-export interface FooterLink {
-  label: string;
-  href: string;
-}
+import type {
+  FAQItem,
+  FeatureItem,
+  FooterLink,
+  NavLink,
+  PricingPlan,
+  ProblemItem,
+  StepItem,
+} from "../types/data.type";
 
 export const navLinks: NavLink[] = [
-  { label: "Features", href: "#features" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
+  { label: "About", section: "about" },
+  { label: "Features", section: "features" },
+  { label: "How It Works", section: "howItWorks" },
+  { label: "Pricing", section: "pricing" },
+  { label: "FAQ", section: "faq" },
 ];
 
 export const problemsData: ProblemItem[] = [

@@ -4,9 +4,16 @@ import { Link } from "react-router-dom";
 import RecalioLogo from "../assets/Recalio.jpeg";
 
 import { navLinks } from "../Data/data";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { scrollToSection } = useAuth();
+
+  const handleSectionClick = (section: (typeof navLinks)[number]["section"]) => {
+    scrollToSection(section);
+    setMobileOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
@@ -30,26 +37,27 @@ export default function Navbar() {
 
         <ul className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                to={link.href}
+            <li key={link.section}>
+              <button
+                type="button"
+                onClick={() => handleSectionClick(link.section)}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.label}
-              </Link>
+              </button>
             </li>
           ))}
         </ul>
 
         <div className="hidden items-center gap-2 lg:flex">
           <Link
-            to="#login"
+            to="/login"
             className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Login
           </Link>
           <Link
-            to="#cta"
+            to="/signup"
             className="group inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-white shadow-ambient transition-all hover:-translate-y-0.5 hover:shadow-lg"
           >
             Start Learning Free
@@ -75,26 +83,26 @@ export default function Navbar() {
         <div className="animate-fade-in border-t border-border/60 bg-background/95 px-5 py-4 max-[320px]:px-2 max-[320px]:py-2 lg:hidden">
           <ul className="flex flex-col gap-1">
             {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  to={link.href}
-                  onClick={() => setMobileOpen(false)}
+              <li key={link.section}>
+                <button
+                  type="button"
+                  onClick={() => handleSectionClick(link.section)}
                   className="block rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {link.label}
-                </Link>
+                </button>
               </li>
             ))}
           </ul>
           <div className="mt-3 flex flex-col gap-2">
             <Link
-              to="#login"
+              to="/login"
               className="inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-navy"
             >
               Login
             </Link>
             <Link
-              to="#cta"
+              to="/login"
               className="group inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-white shadow-ambient transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               Start Learning Free

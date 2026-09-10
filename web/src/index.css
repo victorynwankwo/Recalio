@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+button,
+a,
+[role="button"] {
+  cursor: pointer;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.scroll-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @theme {
   --color-background: #f7f9fb;
   --color-border: #e2e8f0;

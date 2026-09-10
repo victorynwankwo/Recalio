@@ -1,13 +1,18 @@
 import React from "react";
 import { featuresData } from "../Data/data";
+import { useAuth } from "../context/AuthContext";
+import ScrollReveal from "./ScrollReveal";
 
 const Features: React.FC = () => {
+  const { setSectionRef } = useAuth();
+
   return (
     <section
-      className="mx-auto mb-32 max-w-container-max px-margin-mobile max-[320px]:mb-20 max-[320px]:px-2 md:px-gutter"
       id="features"
+      ref={setSectionRef("features")}
+      className="scroll-mt-20 mx-auto mb-32 max-w-container-max px-margin-mobile max-[320px]:mb-20 max-[320px]:px-2 md:px-gutter"
     >
-      <div className="mb-16 text-center max-[320px]:mb-8">
+      <ScrollReveal className="mb-16 text-center max-[320px]:mb-8">
         <h2 className="font-display text-headline-md mb-4 text-navy max-[320px]:text-xl">
           Everything you need to ace your exams
         </h2>
@@ -15,16 +20,17 @@ const Features: React.FC = () => {
           Powerful AI tools designed specifically for students and lifelong
           learners.
         </p>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {featuresData.map((feature) => (
+          <ScrollReveal key={feature.title} delay={featuresData.indexOf(feature) * 90}>
           <div
             key={feature.title}
-            className="rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-5 transition-shadow hover:shadow-md sm:p-6"
+            className="rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-5 text-center transition-shadow hover:shadow-md sm:p-6 md:text-left"
           >
             <div
-              className={`w-10 h-10 rounded-lg ${feature.iconBg} flex items-center justify-center ${feature.iconColor} mb-4`}
+              className={`mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${feature.iconBg} ${feature.iconColor} md:mx-0`}
             >
               <span className="material-symbols-outlined">{feature.icon}</span>
             </div>
@@ -35,6 +41,7 @@ const Features: React.FC = () => {
               {feature.description}
             </p>
           </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>
