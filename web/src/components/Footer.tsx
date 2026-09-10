@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import RecalioLogo from "../assets/Recalio.jpeg";
 import { footerLinks } from "../Data/data";
 
 const Footer: React.FC = () => {
@@ -10,8 +11,8 @@ const Footer: React.FC = () => {
           <Link className="flex items-center gap-2" to="#">
             <img
               alt="Recalio Logo"
-              className="h-6 w-6 object-contain grayscale opacity-70"
-              src="https://lh3.googleusercontent.com/aida/AEtjO1Wx3twVRRNYeuQcMRzwucEyty7RTwEoLjx_3MICTYLtGsYVEgBUis0QZ5XQ-5DLSFKYGXGM09a9ZkAuNvYj3jtvDaZy0iySmn0bWSRus5bBkoBJ5kCyBIURrTdYZbQY5vgr1nqbgVPzFK2VCinmbyfnsgrK32hVJm7u00wUsJIbCaug8Gi5idHqIdjUS6NwK2Ljity44LO2xF2gtOE9x2y37V6vBTV2LC9dtDi_dkU4YWGrAJI-LvuNyA"
+              className="h-8 w-8 object-cover rounded-lg"
+              src={RecalioLogo}
             />
             <span className="font-display text-headline-md font-bold text-navy dark:text-inverse-primary tracking-tight text-xl opacity-80">
               Recalio

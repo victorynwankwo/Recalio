@@ -1,0 +1,2 @@
+export const inputClassName =
+ "w-full rounded-lg bg-surface-container-low px-4 py-3 text-on-surface outline-none transition placeholder:text-outline focus:bg-surface-container-lowest focus:ring-2 focus:ring-secondary-container";

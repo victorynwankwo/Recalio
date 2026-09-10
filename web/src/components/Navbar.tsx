@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import RecalioLogo from "../assets/Recalio.jpeg";
 
 import { navLinks } from "../Data/data";
 
@@ -17,12 +18,11 @@ export default function Navbar() {
           to="#top"
           className="flex min-w-0 items-center gap-2.5 max-[320px]:gap-1.5"
         >
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-gradient shadow-glow max-[320px]:h-7 max-[320px]:w-7">
-            <Sparkles
-              className="h-[18px] w-[18px] text-primary-foreground max-[320px]:h-4 max-[320px]:w-4"
-              strokeWidth={2.2}
-            />
-          </span>
+          <img
+            src={RecalioLogo}
+            alt="Recalio Logo"
+            className="h-9 w-9 shrink-0 rounded-lg object-cover max-[320px]:h-7 max-[320px]:w-7"
+          />
           <span className="truncate text-lg font-semibold tracking-tight text-navy max-[320px]:text-base">
             Recalio
           </span>
