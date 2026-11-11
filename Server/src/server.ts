@@ -10,3 +10,7 @@ app.listen(PORT, () => {
 prisma.$connect()
   .then(() => console.log('Database connected'))
   .catch((err) => console.error('DB connection error:', err));
+
+  // app.get('/', (req, res) => {
+  // res.send('Server is running!');
+// });

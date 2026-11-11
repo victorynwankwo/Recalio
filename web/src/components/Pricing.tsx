@@ -23,11 +23,10 @@ const Pricing: React.FC = () => {
       </ScrollReveal>
 
       <div className="mx-auto flex max-w-4xl flex-col justify-center gap-8 max-[320px]:gap-4 lg:flex-row">
-        {pricingPlans.map((plan) => (
-          <ScrollReveal key={plan.name} delay={pricingPlans.indexOf(plan) * 120} className="flex flex-1">
+        {pricingPlans.map((plan, index) => (
+          <ScrollReveal key={plan.name} delay={index * 120} className="flex flex-1">
           <div
-            key={plan.name}
-            className={`relative flex flex-1 flex-col rounded-2xl p-8 text-center max-[320px]:rounded-xl max-[320px]:p-4 md:text-left ${
+            className={`relative flex flex-1 flex-col rounded-2xl p-8 text-center max-[320px]:rounded-xl max-[320px]:p-4 lg:min-h-[420px] lg:text-left ${
               plan.isPopular
                 ? "bg-navy text-white shadow-xl transform md:-translate-y-4"
                 : "border border-outline-variant/30 bg-surface-container-lowest"
@@ -38,21 +37,23 @@ const Pricing: React.FC = () => {
                 Most Popular
               </div>
             )}
-            <h3
-              className={`font-headline-md mb-2 text-2xl font-semibold ${
-                plan.isPopular ? "text-white" : "text-navy"
-              }`}
-            >
-              {plan.name}
-            </h3>
-            <p
-              className={`font-body-md mb-6 ${
-                plan.isPopular ? "text-blue-200" : "text-on-surface-variant"
-              }`}
-            >
-              {plan.description}
-            </p>
-            <div className="mb-8">
+            <div className="lg:min-h-[84px]">
+              <h3
+                className={`font-headline-md mb-2 text-2xl font-semibold ${
+                  plan.isPopular ? "text-white" : "text-navy"
+                }`}
+              >
+                {plan.name}
+              </h3>
+              <p
+                className={`font-body-md mb-6 ${
+                  plan.isPopular ? "text-blue-200" : "text-on-surface-variant"
+                }`}
+              >
+                {plan.description}
+              </p>
+            </div>
+            <div className="mb-8 flex items-baseline justify-center gap-1 lg:justify-start">
               <span
                 className={`font-display text-4xl font-bold ${
                   plan.isPopular ? "text-white" : "text-navy"
@@ -68,9 +69,9 @@ const Pricing: React.FC = () => {
                 {plan.period}
               </span>
             </div>
-            <ul className="mb-8 flex-1 space-y-4">
+            <ul className="mb-8 flex-1 space-y-4 text-center lg:text-left">
               {plan.features.map((feature) => (
-                <li key={feature} className="flex items-center justify-center gap-3 md:justify-start">
+                <li key={feature} className="flex items-center justify-center gap-3 lg:justify-start">
                   <span
                     className={`material-symbols-outlined text-sm ${
                       plan.isPopular ? "text-secondary-fixed" : "text-secondary"
@@ -90,7 +91,7 @@ const Pricing: React.FC = () => {
             </ul>
             <Link
               to="/login"
-              className={`w-full cursor-pointer rounded-lg py-3 font-semibold transition-colors ${
+              className={`flex w-full cursor-pointer items-center justify-center rounded-lg py-3 font-semibold transition-colors ${
                 plan.isPopular
                   ? "bg-gradient-primary text-white hover:shadow-ambient"
                   : "border border-outline-variant/50 bg-surface text-navy hover:bg-surface-variant"

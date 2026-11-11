@@ -1,3 +1,4 @@
+// app.ts
 import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -33,14 +34,18 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/auth", authRoutes);
-
-app.use("/api", documentRoutes);
-app.use("/api", summaryRoutes);
-app.use("/api", quizRoutes);
+// Root route to fix "Cannot GET /"
+app.get("/", (req, res) => {
+  res.status(200).send("Server is running!");
+});
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api", documentRoutes);
+app.use("/api", summaryRoutes);
+app.use("/api", quizRoutes);
 
 export default app;
